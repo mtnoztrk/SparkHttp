@@ -1,0 +1,11 @@
+C:\Users\mtnoz\source\repos\SparkHttp\SparkHttp\bin\Debug\SparkHttp.exe.config
+C:\Users\mtnoz\source\repos\SparkHttp\SparkHttp\bin\Debug\SparkHttp.exe
+C:\Users\mtnoz\source\repos\SparkHttp\SparkHttp\bin\Debug\SparkHttp.pdb
+C:\Users\mtnoz\source\repos\SparkHttp\SparkHttp\obj\Debug\SparkHttp.csprojResolveAssemblyReference.cache
+C:\Users\mtnoz\source\repos\SparkHttp\SparkHttp\obj\Debug\SparkHttp.SparkHttp.resources
+C:\Users\mtnoz\source\repos\SparkHttp\SparkHttp\obj\Debug\SparkHttp.Properties.Resources.resources
+C:\Users\mtnoz\source\repos\SparkHttp\SparkHttp\obj\Debug\SparkHttp.csproj.GenerateResource.Cache
+C:\Users\mtnoz\source\repos\SparkHttp\SparkHttp\obj\Debug\SparkHttp.csproj.CoreCompileInputs.cache
+C:\Users\mtnoz\source\repos\SparkHttp\SparkHttp\obj\Debug\SparkHttp.exe
+C:\Users\mtnoz\source\repos\SparkHttp\SparkHttp\obj\Debug\SparkHttp.pdb
+C:\Users\mtnoz\source\repos\SparkHttp\SparkHttp\obj\Debug\SparkHttp.Resources.ErrorResource.resources
