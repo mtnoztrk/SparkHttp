@@ -10,6 +10,6 @@ namespace SparkHttp.Service
     public interface IService
     {
         //Request Parse(string input);
-        Task Send(Request request);
+        Task<string> Send(Request request);
     }
 }

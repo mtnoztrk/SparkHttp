@@ -9,7 +9,7 @@ namespace SparkHttp.Service
 {
     public class DeleteService : IService
     {
-        public async Task Send(Request input)
+        public async Task<string> Send(Request input)
         {
             throw new NotImplementedException();
         }

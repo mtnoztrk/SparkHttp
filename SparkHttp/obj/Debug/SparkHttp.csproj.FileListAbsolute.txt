@@ -10,3 +10,4 @@ C:\Users\mtnoz\source\repos\SparkHttp\SparkHttp\obj\Debug\SparkHttp.pdb
 C:\Users\mtnoz\source\repos\SparkHttp\SparkHttp\obj\Debug\SparkHttp.Resources.ErrorResource.resources
 C:\Users\mtnoz\source\repos\SparkHttp\SparkHttp\bin\Debug\log4net.dll
 C:\Users\mtnoz\source\repos\SparkHttp\SparkHttp\bin\Debug\log4net.xml
+C:\Users\mtnoz\source\repos\SparkHttp\SparkHttp\obj\Debug\SparkHttp.csprojResolveAssemblyReference.cache

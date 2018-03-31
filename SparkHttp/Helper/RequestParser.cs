@@ -39,7 +39,7 @@ namespace SparkHttp.Helper
             var regexResult = Regex.Split(lines[0], firstLinePattern);
 
             //getting type of the request.
-            if (!Enum.TryParse(regexResult[1], out Entity.Type type))
+            if (Enum.TryParse(regexResult[1], out Entity.Type type))
             {
                 MessageBox.Show(ErrorResource.NotSupported);
                 log.Error($"Request type is not supported: '{regexResult[1]}'");
@@ -68,7 +68,7 @@ namespace SparkHttp.Helper
                     }
                 } 
             }
-
+            request.RawText = input;
             return request;
         }
 

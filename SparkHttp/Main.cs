@@ -16,18 +16,23 @@ namespace SparkHttp
 {
     public partial class SparkHttp : Form
     {
+        private List<Request> requestList;
         public SparkHttp()
         {
+            requestList = new List<Request>();
+
             InitializeComponent();
         }
 
-        private void sendButton_Click(object sender, EventArgs e)
+        private async void sendButton_Click(object sender, EventArgs e)
         {
             Request request = RequestParser.Parse(requestTextBox.Text);
             if (request != null)
             {
                 IService service = ServiceFactory.GetService(request.RequestType);
-                service.Send(request);
+                var response = await service.Send(request);
+                responseTextBox.Text = response;
+                tabControl1.SelectedTab = tabResponse;
             }
         }
 
@@ -36,14 +41,18 @@ namespace SparkHttp
             Request request = RequestParser.Parse(requestTextBox.Text);
             if (request != null)
             {
-
-                requestGridView.Rows.Add(request.TypeIcon, request.TargetAddress);
+                //simulating data source
+                requestList.Add(request);
+                requestGridView.Rows.Add(request.TypeIcon, request.TargetAddress, request.Id);
             }
         }
 
         private void requestGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            requestTextBox.Text = "Meto";
+            var row = requestGridView.Rows[e.RowIndex];
+            //getting the request with same GUID and use its body.
+            requestTextBox.Text = requestList.FirstOrDefault(c => c.Id.Equals(row.Cells[2].Value)).RawText;
+            tabControl1.SelectedTab = tabRequest;
         }
     }
 }

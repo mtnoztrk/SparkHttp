@@ -1,0 +1,2 @@
+2018-03-31 23:56:00,630 ERROR SparkHttp.Helper.RequestParser - Request type is not supported: 'GET'
+2018-04-01 00:07:09,629 ERROR SparkHttp.Helper.RequestParser - Error parsing line ''

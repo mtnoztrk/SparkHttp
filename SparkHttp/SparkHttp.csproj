@@ -58,7 +58,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ErrorResource.resx</DependentUpon>
     </Compile>
-    <Compile Include="Service\BaseService.cs" />
     <Compile Include="Service\PostService.cs" />
     <Compile Include="Service\DeleteService.cs" />
     <Compile Include="Service\PutService.cs" />
