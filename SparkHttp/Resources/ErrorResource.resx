@@ -121,6 +121,6 @@
     <value>Given Http method is not supported.</value>
   </data>
   <data name="WrongInput" xml:space="preserve">
-    <value>Header line {0} has wrong format.</value>
+    <value>Given input is not correctly formatted.</value>
   </data>
 </root>

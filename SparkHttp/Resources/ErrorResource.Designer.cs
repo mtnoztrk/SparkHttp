@@ -70,7 +70,7 @@ namespace SparkHttp.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Header line {0} has wrong format..
+        ///   Looks up a localized string similar to Given input is not correctly formatted..
         /// </summary>
         internal static string WrongInput {
             get {

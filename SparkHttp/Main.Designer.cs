@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SparkHttp));
             this.requestTextBox = new System.Windows.Forms.RichTextBox();
             this.mainPanel = new System.Windows.Forms.Panel();
             this.requestGridView = new System.Windows.Forms.DataGridView();
@@ -98,19 +99,22 @@
             // 
             // Type
             // 
+            this.Type.Frozen = true;
             this.Type.HeaderText = "Type";
+            this.Type.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
-            this.Type.Width = 62;
+            this.Type.Width = 39;
             // 
             // TargetAddress
             // 
+            this.TargetAddress.Frozen = true;
             this.TargetAddress.HeaderText = "Address";
             this.TargetAddress.Name = "TargetAddress";
             this.TargetAddress.ReadOnly = true;
             this.TargetAddress.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.TargetAddress.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.TargetAddress.Width = 143;
+            this.TargetAddress.Width = 166;
             // 
             // SparkHttp
             // 
@@ -118,6 +122,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 561);
             this.Controls.Add(this.mainPanel);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SparkHttp";
             this.Text = "SparkHttp";
             this.mainPanel.ResumeLayout(false);

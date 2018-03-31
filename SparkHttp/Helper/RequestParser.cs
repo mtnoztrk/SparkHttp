@@ -2,6 +2,7 @@
 using SparkHttp.Resources;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,13 @@ namespace SparkHttp.Helper
 {
     public class RequestParser
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// Parse Http Request from raw request.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public static Request Parse(string input)
         {
             string firstLinePattern = @"(GET|POST|PUT|DELETE) (\S+) (\S+)";
@@ -23,25 +31,42 @@ namespace SparkHttp.Helper
 
             if (!Regex.IsMatch(lines[0], firstLinePattern))
             {
-                MessageBox.Show(ErrorResource.NotSupported);
+                MessageBox.Show(ErrorResource.WrongInput);
+                log.Error($"Error parsing line '{lines[0]}'");
                 return null;
             }
 
             var regexResult = Regex.Split(lines[0], firstLinePattern);
-            Enum.TryParse(regexResult[1], out Entity.Type type);
+
+            //getting type of the request.
+            if (!Enum.TryParse(regexResult[1], out Entity.Type type))
+            {
+                MessageBox.Show(ErrorResource.NotSupported);
+                log.Error($"Request type is not supported: '{regexResult[1]}'");
+                return null;
+            }
+            
             request.RequestType = type;
             request.TargetAddress = regexResult[2];
+            //getting type icon for grid view.
             request.TypeIcon = getTypeIcon(type);
 
-            for (int i = 1; i < lines.Length; i++)
+            //if there any header lines.
+            if (lines.Length > 1)
             {
-                if (!Regex.IsMatch(lines[i], headerPattern))
-                    MessageBox.Show(string.Format(ErrorResource.WrongInput, lines[i]));
-                else
+                for (int i = 1; i < lines.Length; i++)
                 {
-                    var headerResult = Regex.Split(lines[i], headerPattern);
-                    request.Headers.Add(headerResult[1], headerResult[2]);
-                }
+                    if (!Regex.IsMatch(lines[i], headerPattern))
+                    {
+                        MessageBox.Show(ErrorResource.WrongInput);
+                        log.Error($"Error parsing line '{lines[i]}'");
+                    }
+                    else
+                    {
+                        var headerResult = Regex.Split(lines[i], headerPattern);
+                        request.Headers.Add(headerResult[1], headerResult[2]);
+                    }
+                } 
             }
 
             return request;
