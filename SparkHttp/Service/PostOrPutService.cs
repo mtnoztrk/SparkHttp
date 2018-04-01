@@ -23,9 +23,13 @@ namespace SparkHttp.Service
 
                 FillHeaders(request, input);
 
-                byte[] contentBytes = Encoding.ASCII.GetBytes(input.Content);
+                byte[] contentBytes;
+                if (request.ContentType == "application/octet-stream")
+                    contentBytes = HexadecimalStringToByteArray_Rev4(input.Content);
+                else
+                    contentBytes = Encoding.ASCII.GetBytes(input.Content);
                 //checking content length
-                if(request.ContentLength != contentBytes.Length)
+                if (request.ContentLength != contentBytes.Length)
                 {
                     request.ContentLength = contentBytes.Length;
                     log.Info("Content-Length overriden.");
@@ -47,6 +51,19 @@ namespace SparkHttp.Service
                 log.Error($"Connection error: {ex.ToString()}");
                 return Resources.ErrorResource.ErrorSend;
             }
+        }
+
+        //taken from : https://stackoverflow.com/questions/311165/how-do-you-convert-a-byte-array-to-a-hexadecimal-string-and-vice-versa/26304129#26304129
+        private static byte[] HexadecimalStringToByteArray_Rev4(string input)
+        {
+            var outputLength = input.Length / 2;
+            var output = new byte[outputLength];
+            using (var sr = new StringReader(input))
+            {
+                for (var i = 0; i < outputLength; i++)
+                    output[i] = Convert.ToByte(new string(new char[2] { (char)sr.Read(), (char)sr.Read() }), 16);
+            }
+            return output;
         }
     }
 }

@@ -10,6 +10,8 @@ namespace SparkHttp.Service
 {
     public abstract class BaseService : IService
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public void FillHeaders(HttpWebRequest request, Request input)
         {
             foreach (KeyValuePair<string, string> header in input.Headers)
@@ -18,10 +20,10 @@ namespace SparkHttp.Service
                     request.Host = header.Value;
                 else if (header.Key == "Connection")
                 {
-                    if (header.Value == "keep-alive")
-                        request.KeepAlive = true;
+                    if (header.Value.ToLower() == "close")
+                        request.KeepAlive = false;
                     else
-                        request.Connection = header.Value;
+                        request.KeepAlive = true;
                 }
                 else if (header.Key == "Accept")
                 {
@@ -36,8 +38,53 @@ namespace SparkHttp.Service
                     long.TryParse(header.Value, out long result);
                     request.ContentLength = result;
                 }
+                else if (header.Key == "If-Modified-Since")
+                {
+                    if (DateTime.TryParse(header.Value, out DateTime dt))
+                        request.IfModifiedSince = dt;
+                    else
+                        log.Error($"Error parsing Date: {header.Value}");
+                }
+                else if (header.Key == "Referer")
+                {
+                    request.Referer = header.Value;
+                }
+                else if (header.Key == "Transfer-Encoding")
+                {
+                    if(header.Value.ToLower() == "chunked")
+                        request.SendChunked = true;
+                    else
+                        request.TransferEncoding = header.Value;
+                }
+                else if (header.Key == "User-Agent")
+                {
+                    request.UserAgent = header.Value;
+                }
+                else if (header.Key == "Expect")
+                {
+                    if (header.Value.ToLower() == "100-continue")
+                        request.ServicePoint.Expect100Continue = true;
+                    else
+                        request.ServicePoint.Expect100Continue = false;
+                }
+                else if (header.Key == "Date")
+                {
+                    if (DateTime.TryParse(header.Value, out DateTime dt))
+                        request.Date = dt;
+                    else
+                        log.Error($"Error parsing Date: {header.Value}");
+                }
                 else
-                    request.Headers[header.Key] = header.Value;
+                {
+                    try
+                    {
+                        request.Headers[header.Key] = header.Value;
+                    }
+                    catch (Exception ex)
+                    {
+                        log.Error($"Header: {header.Key}: {header.Value} is not added.\n{ex.ToString()}");
+                    }
+                }
             }
         }
         public abstract Task<string> Send(Request request);

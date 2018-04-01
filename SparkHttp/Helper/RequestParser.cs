@@ -71,6 +71,8 @@ namespace SparkHttp.Helper
             #region ParsingLines
             //if content type is json this will be used.
             StringBuilder jsonContent = null;
+            //if content type is octet-stream this will be used.
+            StringBuilder binaryContent = null;
             //if there are any header lines.
             if (lines.Length > 1)
             {
@@ -79,12 +81,19 @@ namespace SparkHttp.Helper
                     if (Regex.IsMatch(lines[i], headerPattern))
                     {
                         var headerResult = Regex.Split(lines[i], headerPattern);
-                        request.Headers.Add(headerResult[1], headerResult[2]);
+                        //overrides previous value if there are duplicate headers.
+                        request.Headers[headerResult[1]] = headerResult[2];
+                        //octet-stream is being used for binary data
+                        if (headerResult[1] == "Content-Type" && headerResult[2] == "application/octet-stream")
+                            binaryContent = new StringBuilder();
+                    }
+                    else if (binaryContent != null)
+                    {
+                        binaryContent.Append(lines[i]);
                     }
                     else if (Regex.Matches(lines[i], contentPattern).Count > 0) // content type application/x-www-form-urlencoded
                     {
                         request.Content = lines[i];
-                        //checking content type
                         overrideHeader(request.Headers, "Content-Type", "application/x-www-form-urlencoded");
                     }
                     else if (lines[i].StartsWith("{") || jsonContent != null) // content type application/json
@@ -92,7 +101,6 @@ namespace SparkHttp.Helper
                         if (jsonContent == null)
                         {
                             jsonContent = new StringBuilder();
-                            //checking content type
                             overrideHeader(request.Headers, "Content-Type", "application/json");
                         }
                         jsonContent.Append(lines[i]);
@@ -100,11 +108,13 @@ namespace SparkHttp.Helper
                     else
                     {
                         MessageBox.Show(ErrorResource.WrongInput);
-                        log.Error($"Error parsing line '{lines[i]}'");
+                        log.ErrorFormat("Error parsing line '{0}'", lines[i]);
 
                     }
                 }
             }
+            if (binaryContent != null)
+                request.Content = binaryContent.ToString();
             if (jsonContent != null)
                 request.Content = jsonContent.ToString();
             #endregion

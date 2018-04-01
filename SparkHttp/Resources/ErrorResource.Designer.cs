@@ -70,6 +70,15 @@ namespace SparkHttp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to General error!.
+        /// </summary>
+        internal static string GeneralError {
+            get {
+                return ResourceManager.GetString("GeneralError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Given Http method is not supported..
         /// </summary>
         internal static string NotSupported {
