@@ -21,7 +21,7 @@ namespace SparkHttpTest
                 "Connection: close\n" +
                 "Content-Language: da\n" +
                 "Content-Length: 3495\n" +
-                "Content-Location\n" +
+                "Content-Location: /index.htm\n" +
                 "Content-Range: bytes 21010-47021/47022\n" +
                 "Date: Tue, 15 Nov 1994 08:12:31 GMT\n" +
                 "ETag: \"xyzzy\"\n" +
