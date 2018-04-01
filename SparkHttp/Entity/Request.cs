@@ -10,21 +10,22 @@ namespace SparkHttp.Entity
 {
     public enum Type
     {
-        Get,
-        Post,
-        Put,
-        Delete
+        GET,
+        POST,
+        PUT,
+        DELETE
     }
     public class Request
     {
-        private NameValueCollection headers = new NameValueCollection();
+        private Dictionary<string,string> headers = new Dictionary<string, string>();
 
         public Guid Id { get; set; }
         public Type RequestType { get; set; }
         public Bitmap TypeIcon { get; set; }
         public string TargetAddress { get; set; }
-        public string Body { get; set; }
-        public NameValueCollection Headers { get => headers; set => headers = value; }
+        public Version RequestVersion { get; set; }
+        public Dictionary<string, string> Headers { get => headers; set => headers = value; }
+        public string Content { get; set; }
         public string RawText { get; set; }
 
         public Request()

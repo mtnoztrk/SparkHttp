@@ -12,13 +12,13 @@ namespace SparkHttp.Service
         {
             switch (serviceType)
             {
-                case Entity.Type.Get:
+                case Entity.Type.GET:
                     return new GetService();
-                case Entity.Type.Post:
-                    return new PostService();
-                case Entity.Type.Put:
-                    return new PutService();
-                case Entity.Type.Delete:
+                case Entity.Type.POST:
+                    return new PostOrPutService();
+                case Entity.Type.PUT:
+                    return new PostOrPutService();
+                case Entity.Type.DELETE:
                     return new DeleteService();
                 default:
                     return null;

@@ -61,6 +61,15 @@ namespace SparkHttp.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sending request failed!.
+        /// </summary>
+        internal static string ErrorSend {
+            get {
+                return ResourceManager.GetString("ErrorSend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Given Http method is not supported..
         /// </summary>
         internal static string NotSupported {

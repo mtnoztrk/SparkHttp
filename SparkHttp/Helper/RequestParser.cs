@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -25,10 +26,12 @@ namespace SparkHttp.Helper
         {
             string firstLinePattern = @"(GET|POST|PUT|DELETE) (\S+) (\S+)";
             string headerPattern = @"([a-zA-Z0-9- ]+): (.+)";
+            string contentPattern = @"((\w+(\+|%20)*\w*)=(\w+(\+|%20)*\w*)&*)";
             Request request = new Request();
 
-            string[] lines = input.Split('\n');
+            string[] lines = input.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
+            #region FirstLine
             if (!Regex.IsMatch(lines[0], firstLinePattern))
             {
                 MessageBox.Show(ErrorResource.WrongInput);
@@ -39,35 +42,74 @@ namespace SparkHttp.Helper
             var regexResult = Regex.Split(lines[0], firstLinePattern);
 
             //getting type of the request.
-            if (Enum.TryParse(regexResult[1], out Entity.Type type))
+            if (!Enum.TryParse(regexResult[1], out Entity.Type type))
             {
                 MessageBox.Show(ErrorResource.NotSupported);
                 log.Error($"Request type is not supported: '{regexResult[1]}'");
                 return null;
             }
-            
+
             request.RequestType = type;
             request.TargetAddress = regexResult[2];
+
             //getting type icon for grid view.
             request.TypeIcon = getTypeIcon(type);
 
-            //if there any header lines.
+            //getting request version
+            if (regexResult[3] == "HTTP/1.1")
+                request.RequestVersion = HttpVersion.Version11;
+            else if (regexResult[3] == "HTTP/1.0")
+                request.RequestVersion = HttpVersion.Version10;
+            else
+            {
+                MessageBox.Show(ErrorResource.WrongInput);
+                log.Error($"Wrong request version: '{regexResult[3]}'");
+                return null;
+            }
+            #endregion
+
+            #region ParsingLines
+            //if content type is json this will be used.
+            StringBuilder jsonContent = null;
+            //if there are any header lines.
             if (lines.Length > 1)
             {
                 for (int i = 1; i < lines.Length; i++)
                 {
-                    if (!Regex.IsMatch(lines[i], headerPattern))
-                    {
-                        MessageBox.Show(ErrorResource.WrongInput);
-                        log.Error($"Error parsing line '{lines[i]}'");
-                    }
-                    else
+                    if (Regex.IsMatch(lines[i], headerPattern))
                     {
                         var headerResult = Regex.Split(lines[i], headerPattern);
                         request.Headers.Add(headerResult[1], headerResult[2]);
                     }
-                } 
+                    else if (Regex.Matches(lines[i], contentPattern).Count > 0) // content type application/x-www-form-urlencoded
+                    {
+                        request.Content = lines[i];
+                        //checking content type
+                        overrideHeader(request.Headers, "Content-Type", "application/x-www-form-urlencoded");
+                    }
+                    else if (lines[i].StartsWith("{") || jsonContent != null) // content type application/json
+                    {
+                        if (jsonContent == null)
+                        {
+                            jsonContent = new StringBuilder();
+                            //checking content type
+                            overrideHeader(request.Headers, "Content-Type", "application/json");
+                        }
+                        jsonContent.Append(lines[i]);
+                    }
+                    else
+                    {
+                        MessageBox.Show(ErrorResource.WrongInput);
+                        log.Error($"Error parsing line '{lines[i]}'");
+
+                    }
+                }
             }
+            if (jsonContent != null)
+                request.Content = jsonContent.ToString();
+            #endregion
+
+            //storing raw http request for saving.
             request.RawText = input;
             return request;
         }
@@ -76,16 +118,25 @@ namespace SparkHttp.Helper
         {
             switch (type)
             {
-                case Entity.Type.Get:
+                case Entity.Type.GET:
                     return Properties.Resources.get;
-                case Entity.Type.Post:
+                case Entity.Type.POST:
                     return Properties.Resources.post;
-                case Entity.Type.Put:
+                case Entity.Type.PUT:
                     return Properties.Resources.put;
-                case Entity.Type.Delete:
+                case Entity.Type.DELETE:
                     return Properties.Resources.delete;
                 default:
                     return Properties.Resources.get;
+            }
+        }
+
+        private static void overrideHeader(Dictionary<string, string> dictionary, string key, string value)
+        {
+            if (dictionary[key] != value)
+            {
+                dictionary[key] = value;
+                log.Info($"Header: {key} overridden as '{value}'");
             }
         }
     }

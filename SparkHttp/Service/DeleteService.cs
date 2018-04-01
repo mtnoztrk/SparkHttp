@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace SparkHttp.Service
 {
-    public class DeleteService : IService
+    public class DeleteService : BaseService
     {
-        public async Task<string> Send(Request input)
+        public override async Task<string> Send(Request input)
         {
             throw new NotImplementedException();
         }

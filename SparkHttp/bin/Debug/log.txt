@@ -1,0 +1,35 @@
+2018-03-31 23:56:00,630 ERROR SparkHttp.Helper.RequestParser - Request type is not supported: 'GET'
+2018-04-01 00:07:09,629 ERROR SparkHttp.Helper.RequestParser - Error parsing line ''
+2018-04-01 12:35:28,674 ERROR SparkHttp.Helper.RequestParser - Error parsing line ''
+2018-04-01 12:35:36,070 ERROR SparkHttp.Service.GetService - Connection error: System.ArgumentException: The 'Content-Type' header must be modified using the appropriate property or method.
+Parameter name: name
+   at System.Net.WebHeaderCollection.ThrowOnRestrictedHeader(String headerName)
+   at System.Net.WebHeaderCollection.Set(String name, String value)
+   at System.Collections.Specialized.NameValueCollection.set_Item(String name, String value)
+   at SparkHttp.Service.GetService.<Send>d__1.MoveNext() in C:\Users\mtnoz\source\repos\SparkHttp\SparkHttp\Service\GetService.cs:line 42
+2018-04-01 12:46:38,209 ERROR SparkHttp.Helper.RequestParser - Request type is not supported: 'POST'
+2018-04-01 12:46:47,271 ERROR SparkHttp.Helper.RequestParser - Request type is not supported: 'POST'
+2018-04-01 12:47:48,866 ERROR SparkHttp.Helper.RequestParser - Error parsing line ''
+2018-04-01 12:47:48,909 ERROR SparkHttp.Service.PostOrPutService - Connection error: System.ArgumentException: The 'Content-Length' header must be modified using the appropriate property or method.
+Parameter name: name
+   at System.Net.WebHeaderCollection.ThrowOnRestrictedHeader(String headerName)
+   at System.Net.WebHeaderCollection.Set(String name, String value)
+   at System.Collections.Specialized.NameValueCollection.set_Item(String name, String value)
+   at SparkHttp.Service.BaseService.FillHeaders(HttpWebRequest request, Request input) in C:\Users\mtnoz\source\repos\SparkHttp\SparkHttp\Service\BaseService.cs:line 35
+   at SparkHttp.Service.PostOrPutService.<Send>d__1.MoveNext() in C:\Users\mtnoz\source\repos\SparkHttp\SparkHttp\Service\PostOrPutService.cs:line 24
+2018-04-01 12:56:26,129 ERROR SparkHttp.Service.PostOrPutService - Connection error: System.ArgumentException: The 'Content-Length' header must be modified using the appropriate property or method.
+Parameter name: name
+   at System.Net.WebHeaderCollection.ThrowOnRestrictedHeader(String headerName)
+   at System.Net.WebHeaderCollection.Set(String name, String value)
+   at System.Collections.Specialized.NameValueCollection.set_Item(String name, String value)
+   at SparkHttp.Service.BaseService.FillHeaders(HttpWebRequest request, Request input) in C:\Users\mtnoz\source\repos\SparkHttp\SparkHttp\Service\BaseService.cs:line 35
+   at SparkHttp.Service.PostOrPutService.<Send>d__1.MoveNext() in C:\Users\mtnoz\source\repos\SparkHttp\SparkHttp\Service\PostOrPutService.cs:line 24
+2018-04-01 13:04:34,017 INFO SparkHttp.Service.PostOrPutService - Content-Length overriden.
+2018-04-01 13:06:16,499 ERROR SparkHttp.Service.PostOrPutService - Connection error: System.Net.WebException: The remote server returned an error: (408) Request Timeout.
+   at System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   at System.Threading.Tasks.TaskFactory`1.FromAsyncCoreLogic(IAsyncResult iar, Func`2 endFunction, Action`1 endAction, Task`1 promise, Boolean requiresSynchronization)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   at SparkHttp.Service.PostOrPutService.<Send>d__1.MoveNext() in C:\Users\mtnoz\source\repos\SparkHttp\SparkHttp\Service\PostOrPutService.cs:line 37

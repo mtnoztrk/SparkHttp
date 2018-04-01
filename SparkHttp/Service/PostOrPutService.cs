@@ -6,11 +6,10 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace SparkHttp.Service
 {
-    public class GetService : BaseService
+    public class PostOrPutService : BaseService
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -23,6 +22,18 @@ namespace SparkHttp.Service
                 request.ProtocolVersion = input.RequestVersion;
 
                 FillHeaders(request, input);
+
+                byte[] contentBytes = Encoding.ASCII.GetBytes(input.Content);
+                //checking content length
+                if(request.ContentLength != contentBytes.Length)
+                {
+                    request.ContentLength = contentBytes.Length;
+                    log.Info("Content-Length overriden.");
+                }
+
+                Stream stream = request.GetRequestStream();
+                stream.Write(contentBytes, 0, contentBytes.Length);
+                stream.Close();
 
                 var response = await request.GetResponseAsync();
 
